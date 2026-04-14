@@ -132,15 +132,6 @@ in
         }
       ];
 
-      outputs."HDMI-A-1" = {
-        scale = 1.0;
-        mode = {
-          width = 3840;
-          height = 2160;
-          refresh = 120.0;
-        };
-      };
-
       input = {
         keyboard = {
           xkb = {
@@ -285,6 +276,31 @@ in
           "Mod+Shift+Slash" = bind "Show Hotkeys" { show-hotkey-overlay = { }; };
 
           # Media
+          "XF86AudioRaiseVolume" = bind "Volume Up" {
+            spawn = [
+              "wpctl"
+              "set-volume"
+              "@DEFAULT_AUDIO_SINK@"
+              "5%+"
+            ];
+          };
+          "XF86AudioLowerVolume" = bind "Volume Down" {
+            spawn = [
+              "wpctl"
+              "set-volume"
+              "@DEFAULT_AUDIO_SINK@"
+              "5%-"
+            ];
+          };
+          "XF86AudioMute" = bind "Mute" {
+            spawn = [
+              "wpctl"
+              "set-mute"
+              "@DEFAULT_AUDIO_SINK@"
+              "toggle"
+            ];
+          };
+
           "XF86AudioPlay" = bind "Play/Pause" {
             spawn = [
               "playerctl"

@@ -1,5 +1,7 @@
 {...}:
 {
+  services.tailscale.enable = true;
+
   services = {
     gvfs.enable = true;
     upower.enable = true;

@@ -13,7 +13,7 @@
     backupFileExtension = "hm-backup";
     extraSpecialArgs = {inherit inputs username host;};
     users.${username} = {
-      imports = [./../home];
+      imports = [./../../hosts/${host}/home.nix];
       home.username = "${username}";
       home.homeDirectory = "/home/${username}";
       home.stateVersion = "25.11";
@@ -29,7 +29,9 @@
       "wheel"
     ];
     shell = pkgs.nushell;
-    hashedPassword= "$y$j9T$SiImGjYtyoL4krrAWCWQ21$FobbxKFBsxRpudY8L9Z0K5wbRAipY6TljD2wEWoDqJA";
+    hashedPassword = "$y$j9T$SiImGjYtyoL4krrAWCWQ21$FobbxKFBsxRpudY8L9Z0K5wbRAipY6TljD2wEWoDqJA";
+    subUidRanges = [{ startUid = 100000; count = 65536; }];
+    subGidRanges = [{ startGid = 100000; count = 65536; }];
     # passwordFile = "/etc/nixos/secrets/pw";
     # initialPassword = "asdf";
   };

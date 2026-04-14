@@ -37,7 +37,7 @@
       nixosConfigurations = {
         nix-home = nixpkgs.lib.nixosSystem {
           modules = [
-          ./hosts/tower
+          ./hosts/nix-home
           stylix.nixosModules.stylix
           inputs.lanzaboote.nixosModules.lanzaboote
           {nixpkgs.hostPlatform = system;}

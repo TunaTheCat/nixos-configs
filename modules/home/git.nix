@@ -9,8 +9,8 @@ in
     # All git config (including user info) now goes inside 'settings'
     settings = {
       user = {
-        name = "rustyRoby95";
-        email = "a@bc.de";
+        name = "jb";
+        email = "jb@w.ch";
       };
       init.defaultBranch = "main";
       merge.conflictStyle = "diff3";
@@ -19,7 +19,8 @@ in
       color.ui = "true";
       url = {
         "git@github.com:".insteadOf = "https://github.com/";
-        "git@gitlab.spacetek.ch:".insteadOf = "https://gitlab.spacetek.ch/";
+        # "git@gitlab.spacetek.ch:".insteadOf = "https://gitlab.spacetek.ch/";
+        "ssh://git@gitlab.spacetek.ch/".insteadOf = "https://gitlab.spacetek.ch/";
       };
       core.excludesFile = "/home/${username}/.config/git/.gitignore";
     };
