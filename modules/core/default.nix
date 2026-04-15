@@ -14,5 +14,6 @@
     ./ts.nix
     ./stylix.nix
     ./greetd.nix
+    ./tpm.nix
   ];
 }
