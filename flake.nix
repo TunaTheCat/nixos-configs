@@ -1,14 +1,18 @@
 {
-  description = "jb's nixos config";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri.url = "github:sodiboo/niri-flake";
 
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    import-tree.url = "github:vic/import-tree";
+
+    niri.url = "github:sodiboo/niri-flake";
     nur.url = "github:nix-community/NUR";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -23,30 +27,6 @@
   };
 
   outputs =
-    { self, nixpkgs, stylix, ... }@inputs: 
-    let
-      username = "jb";
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-      lib = nixpkgs.lib;
-    in
-    {
-      nixosConfigurations = {
-        nix-home = nixpkgs.lib.nixosSystem {
-          modules = [
-          ./hosts/nix-home
-          stylix.nixosModules.stylix
-          inputs.lanzaboote.nixosModules.lanzaboote
-          {nixpkgs.hostPlatform = system;}
-          ];
-          specialArgs = {
-            host = "nix-home";
-            inherit self inputs username;
-          };
-        };
-      };
-  };
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

@@ -1,4 +1,6 @@
 { ... }:
 {
-  programs.hyprlock.enable = true;
+  flake.modules.homeManager.hyprlock = {
+    programs.hyprlock.enable = true;
+  };
 }
