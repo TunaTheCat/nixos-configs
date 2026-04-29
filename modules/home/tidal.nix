@@ -4,7 +4,9 @@
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
-        supercollider
+        supercollider-with-sc3-plugins
+        (haskellPackages.ghcWithPackages (hp: [ hp.tidal ]))
+        qjackctl
       ];
     };
 }
