@@ -15,5 +15,6 @@
     evince
     openvpn
     keepassxc
+    joplin-desktop
   ];
 }

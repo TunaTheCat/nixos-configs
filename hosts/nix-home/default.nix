@@ -2,7 +2,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./liquidctl.nix
     ./../../modules/core
   ];
 

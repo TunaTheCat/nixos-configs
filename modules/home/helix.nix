@@ -21,7 +21,6 @@
         true-color = true;
         end-of-line-diagnostics = "hint";
         trim-trailing-whitespace = true;
-        clipboard-provider = "wayland";
 
         inline-diagnostics.cursor-line = "warning";
 

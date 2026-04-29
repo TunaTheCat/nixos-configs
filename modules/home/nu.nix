@@ -34,6 +34,8 @@
 
       $env.EDITOR = "hx"
 
+      use std/dirs
+
       alias lg = lazygit
       alias ex = yazi
 

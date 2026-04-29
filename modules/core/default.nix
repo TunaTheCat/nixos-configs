@@ -15,5 +15,6 @@
     ./stylix.nix
     ./greetd.nix
     ./tpm.nix
+    ./watchdog.nix
   ];
 }

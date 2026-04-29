@@ -1,4 +1,9 @@
-{ inputs, pkgs, config, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 let
   terminal = "kitty";
   browser = "firefox";
@@ -200,6 +205,12 @@ in
               "--copy"
             ];
           };
+          "Mod+Shift+S" = bind "Screenshot (Copy)" {
+            spawn = [
+              "screenshot"
+              "--copy"
+            ];
+          };
           "Mod+Print" = bind "Screenshot (Save)" {
             spawn = [
               "screenshot"
@@ -219,8 +230,8 @@ in
           "Mod+Up" = hidden { focus-window-up = { }; };
           "Mod+Down" = hidden { focus-window-down = { }; };
           "Mod+H" = bind "Focus Left" { focus-column-left = { }; };
-          "Mod+J" = bind "Focus Down" { focus-window-down = { }; };
-          "Mod+K" = bind "Focus Up" { focus-window-up = { }; };
+          "Mod+J" = bind "Focus Down" { focus-window-or-workspace-down = { }; };
+          "Mod+K" = bind "Focus Up" { focus-window-or-workspace-up = { }; };
           "Mod+L" = bind "Focus Right" { focus-column-right = { }; };
 
           # Move Windows (arrows hidden — vim keys shown)
@@ -252,8 +263,6 @@ in
           "Mod+Shift+7" = bind "Move to WS 7" { move-column-to-workspace = 7; };
           "Mod+Shift+8" = bind "Move to WS 8" { move-column-to-workspace = 8; };
           "Mod+Shift+9" = bind "Move to WS 9" { move-column-to-workspace = 9; };
-          "Mod+Alt+J" = bind "Next Workspace" { focus-workspace-down = { }; };
-          "Mod+Alt+K" = bind "Prev Workspace" { focus-workspace-up = { }; };
 
           # Resize
           "Mod+Minus" = bind "Shrink Width" { set-column-width = "-10%"; };
