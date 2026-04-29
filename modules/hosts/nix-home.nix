@@ -7,6 +7,7 @@ in
     imports = [
       nixos.nix-home-hardware
       nixos.bootloader
+      nixos.secureboot
       nixos.system
       nixos.network
       nixos.security

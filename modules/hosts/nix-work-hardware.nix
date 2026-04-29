@@ -1,7 +1,5 @@
 { ... }:
 {
-  # Replace this with the output of:
-  #   nixos-generate-config --root /mnt --show-hardware-config
   flake.modules.nixos.nix-work-hardware =
     {
       config,
@@ -14,19 +12,26 @@
         (modulesPath + "/installer/scan/not-detected.nix")
       ];
 
-      # TODO: fill in from nixos-generate-config
-      boot.initrd.availableKernelModules = [];
-      boot.initrd.kernelModules = [];
-      boot.kernelModules = [];
-      boot.extraModulePackages = [];
+      boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+      boot.initrd.kernelModules = [ ];
+      boot.kernelModules = [ "kvm-intel" ];
+      boot.extraModulePackages = [ ];
 
-      # TODO: fill in your disk layout
-      # fileSystems."/" = { device = "..."; fsType = "..."; };
-      # fileSystems."/boot" = { device = "..."; fsType = "vfat"; };
+      fileSystems."/" = {
+        device = "/dev/disk/by-uuid/7403e5d9-80bc-4e38-822e-d4d7dc4d0893";
+        fsType = "ext4";
+      };
 
-      swapDevices = [];
+      fileSystems."/boot" = {
+        device = "/dev/disk/by-uuid/6DC9-EBED";
+        fsType = "vfat";
+        options = [ "fmask=0077" "dmask=0077" ];
+      };
+
+      swapDevices = [ ];
 
       networking.useDHCP = lib.mkDefault true;
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+      hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     };
 }

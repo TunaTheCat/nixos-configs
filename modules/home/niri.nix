@@ -66,6 +66,7 @@
 
       programs.niri = {
         enable = true;
+        package = pkgs.niri;
         settings = {
           cursor = {
             theme = config.stylix.cursor.name;

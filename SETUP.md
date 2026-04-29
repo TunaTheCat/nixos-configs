@@ -1,41 +1,21 @@
-# NixOS Setup Guide — T14s (and new hosts)
+# NixOS Setup Guide — new hosts
 
-## Prerequisites
+This repo uses flake-parts + import-tree (the "dendritic" pattern). Every
+`.nix` file under `modules/` is auto-imported. Hosts live in
+`modules/hosts/<name>.nix` and pick which `flake.modules.nixos.*` modules
+they want.
 
-Push the dotfiles to a git remote (if not already done):
+## 1. Boot the installer
 
-```bash
-cd ~/.dotfiles
-git init
-git add .
-git commit -m "initial commit"
-git remote add origin git@github.com:<user>/dotfiles.git
-git push -u origin main
-```
-
-## 1. Create a bootable NixOS USB
-
-Download the minimal ISO from https://nixos.org/download/#nixos-iso and flash it:
+Flash the minimal NixOS ISO and boot from USB:
 
 ```bash
 sudo dd if=nixos-minimal-*.iso of=/dev/sdX bs=4M status=progress oflag=sync
 ```
 
-## 2. Boot the installer
+Connect WiFi if needed (`wpa_cli` or `nmtui`).
 
-Boot from USB. Connect to WiFi if needed:
-
-```bash
-sudo systemctl start wpa_supplicant
-wpa_cli
-> add_network 0
-> set_network 0 ssid "SSID"
-> set_network 0 psk "PASSWORD"
-> enable_network 0
-> quit
-```
-
-## 3. Partition the disk
+## 2. Partition, encrypt, mount
 
 Identify your disk with `lsblk`. Example for `/dev/nvme0n1`:
 
@@ -44,11 +24,7 @@ sudo parted /dev/nvme0n1 -- mklabel gpt
 sudo parted /dev/nvme0n1 -- mkpart ESP fat32 1MiB 1GiB
 sudo parted /dev/nvme0n1 -- set 1 esp on
 sudo parted /dev/nvme0n1 -- mkpart primary 1GiB 100%
-```
 
-## 4. Encrypt and format
-
-```bash
 sudo cryptsetup luksFormat /dev/nvme0n1p2
 sudo cryptsetup open /dev/nvme0n1p2 cryptroot
 
@@ -60,118 +36,119 @@ sudo mkdir -p /mnt/boot
 sudo mount /dev/nvme0n1p1 /mnt/boot
 ```
 
-## 5. Generate hardware config and install a minimal system
+## 3. Generate the hardware config
 
 ```bash
-sudo nixos-generate-config --root /mnt
+sudo nixos-generate-config --root /mnt --no-filesystems
 ```
 
-Edit `/mnt/etc/nixos/configuration.nix` to add a minimal bootable system:
+We pass `--no-filesystems` because the flake host file already declares
+filesystems via the LUKS UUID — see `modules/hosts/nix-home-hardware.nix`
+for the pattern. Note the LUKS UUID:
+
+```bash
+sudo blkid /dev/nvme0n1p2
+```
+
+## 4. Add the host to the flake
+
+On another machine (or in the installer with `nix-shell -p git`):
+
+```bash
+git clone <your dotfiles remote> /mnt/etc/dotfiles
+```
+
+Create `modules/hosts/<name>-hardware.nix` mirroring the existing one:
+copy `/mnt/etc/nixos/hardware-configuration.nix`'s contents into a
+`flake.modules.nixos.<name>-hardware` block, fill in the LUKS UUID under
+`boot.initrd.luks.devices`.
+
+Create `modules/hosts/<name>.nix` modelled on `nix-work.nix`. Imports to
+include for a working baseline:
 
 ```nix
-{ pkgs, ... }:
-{
-  imports = [ ./hardware-configuration.nix ];
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "nix-work";
-  networking.networkmanager.enable = true;
-
-  users.users.jb = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
-    initialPassword = "changeme";
-  };
-
-  environment.systemPackages = with pkgs; [ git vim ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  system.stateVersion = "25.11";
-}
+imports = [
+  nixos.<name>-hardware
+  nixos.bootloader        # plain systemd-boot — works first boot
+  # nixos.secureboot      # add later, AFTER enrolling sbctl keys
+  nixos.system
+  nixos.network
+  nixos.security
+  nixos.services
+  nixos.program
+  nixos.wayland
+  nixos.hardware
+  nixos.tailscale
+  nixos.stylix
+  nixos.greetd
+  nixos.watchdog
+  nixos.nh
+  nixos.user
+];
 ```
 
-Install and reboot:
+## 5. Install
 
 ```bash
-sudo nixos-install
+sudo nixos-install --flake /mnt/etc/dotfiles#<name>
 sudo reboot
 ```
 
-## 6. Clone dotfiles and create the laptop host
+niri is pinned to `pkgs.niri` (the cache.nixos.org binary), so install
+downloads it instead of compiling from source. Lanzaboote is opt-in via
+the separate `nixos.secureboot` module — keeping it out of the first
+boot avoids the chicken-and-egg where the bootloader can't verify
+itself before keys are enrolled.
 
-Log in as `jb`, then:
+## 6. Optional: enable secure boot
 
-```bash
-git clone git@github.com:<user>/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
-```
-
-Copy the generated hardware config into a new host:
-
-```bash
-mkdir -p hosts/t14s
-sudo cp /etc/nixos/hardware-configuration.nix hosts/t14s/
-```
-
-Create `hosts/t14s/default.nix`:
-
-```nix
-{ ... }:
-{
-  imports = [
-    ./hardware-configuration.nix
-    ./../../modules/core
-  ];
-
-  # Laptop-specific
-  powerManagement.cpuFreqGovernor = "powersave";
-  services.thermald.enable = true;
-  services.tlp.enable = true;
-}
-```
-
-## 7. Add the new host to flake.nix
-
-Add a second entry under `nixosConfigurations`:
-
-```nix
-nix-work = nixpkgs.lib.nixosSystem {
-  modules = [
-    ./hosts/t14s
-    stylix.nixosModules.stylix
-    inputs.lanzaboote.nixosModules.lanzaboote
-    { nixpkgs.hostPlatform = system; }
-  ];
-  specialArgs = {
-    host = "nix-work";
-    inherit self inputs username;
-  };
-};
-```
-
-## 8. Build and switch
+After the first successful boot, log in and:
 
 ```bash
-cd ~/.dotfiles
-sudo nixos-rebuild switch --flake .#nix-work
-```
-
-After first successful boot, set up secure boot (optional):
-
-```bash
+# 1. Make sure the firmware is in Setup Mode (BIOS → reset/clear PK).
+sudo sbctl status      # should show "Setup Mode: Enabled"
 sudo sbctl create-keys
-sudo sbctl enroll-keys --microsoft   # must be in Setup Mode
-sudo nixos-rebuild switch --flake .#nix-work
+sudo sbctl enroll-keys --microsoft
 ```
 
-## 9. Laptop-specific adjustments
+Then add `nixos.secureboot` to the host's imports in
+`modules/hosts/<name>.nix` and rebuild:
 
-Things to check after first deploy:
+```bash
+sudo nixos-rebuild switch --flake .#<name>
+sudo sbctl verify       # everything should be signed
+```
 
-- **Display**: Remove or adjust the `outputs."HDMI-A-1"` block in `niri.nix` — the laptop display will have a different output name (e.g., `eDP-1`). Run `niri msg outputs` to find it.
-- **Scaling**: The T14s likely needs `scale = 1.25` or `1.5` depending on the panel resolution.
-- **Trackpad**: Already configured in niri (`touchpad.natural-scroll = true`).
-- **Secure Boot**: The T14s firmware must be in Setup Mode before enrolling keys. Reset Secure Boot keys in BIOS first.
+Reboot. If anything is unsigned, the EFI fallback to systemd-boot is
+gone (lanzaboote sets `boot.loader.systemd-boot.enable = mkForce false`)
+— you'll need a NixOS USB to recover. Do not enable secure boot blind.
+
+## 7. Optional: TPM2 auto-unlock for LUKS
+
+Once booted with secure boot on, bind the LUKS slot to PCR 7
+(measures secure-boot state):
+
+```bash
+sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 \
+  /dev/disk/by-uuid/<LUKS-UUID>
+```
+
+Then in the host file:
+
+```nix
+boot.initrd.systemd.enable = true;
+boot.initrd.luks.devices."luks-<LUKS-UUID>".crypttabExtraOpts = [ "tpm2-device=auto" ];
+security.tpm2 = { enable = true; pkcs11.enable = true; tctiEnvironment.enable = true; };
+```
+
+See `modules/hosts/nix-home.nix` for a working example. There's also
+`TPM-UNLOCK.md` with more detail on what PCR 7 protects against.
+
+## 8. Per-host adjustments
+
+- **Display**: niri output config goes in the host file under
+  `home-manager.users.${config.username}.programs.niri.settings.outputs`.
+  Run `niri msg outputs` once booted to find the exact connector name
+  (`eDP-1`, `DP-2`, etc).
+- **Scaling**: laptops usually want `scale = 1.25` or `1.5`.
+- **CPU governor**: laptops `"powersave"`, desktops `"performance"`.
