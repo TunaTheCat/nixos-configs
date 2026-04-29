@@ -17,6 +17,7 @@
         openvpn
         keepassxc
         joplin-desktop
+        deluge
       ];
     };
 }
