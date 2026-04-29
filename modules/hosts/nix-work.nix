@@ -69,7 +69,6 @@ in
                 height = 2160;
                 refresh = 59.996;
               };
-              position = { x = 0; y = 0; };
             };
           };
 
