@@ -11,7 +11,7 @@
         backupFileExtension = "hm-backup";
         extraSpecialArgs = { inherit inputs; };
         users.${config.username} = {
-          imports = builtins.attrValues (config.flake.modules.homeManager or {});
+          imports = builtins.attrValues (config.flake.modules.homeManager or { });
           home.username = config.username;
           home.homeDirectory = "/home/${config.username}";
           home.stateVersion = "25.11";
@@ -25,6 +25,7 @@
         extraGroups = [
           "networkmanager"
           "wheel"
+          "audio"
         ];
         shell = pkgs.nushell;
         hashedPassword = "$y$j9T$SiImGjYtyoL4krrAWCWQ21$FobbxKFBsxRpudY8L9Z0K5wbRAipY6TljD2wEWoDqJA";
