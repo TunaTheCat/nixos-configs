@@ -3,6 +3,7 @@
   flake.modules.nixos.services = {
     services.tailscale.enable = true;
     services.openssh.enable = true;
+    services.pipewire.jack.enable = true;
 
     services = {
       gvfs.enable = true;
