@@ -12,12 +12,14 @@
 
       home.packages = with pkgs; [
         slack
+        teams-for-linux
         loupe
         evince
         openvpn
         keepassxc
         joplin-desktop
         deluge
+        remmina
       ];
     };
 }

@@ -7,7 +7,6 @@
         carapace
         fastfetch
         direnv
-        lazygit
       ];
 
       programs.starship = {
