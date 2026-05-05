@@ -37,6 +37,16 @@ in
         };
       };
 
+      programs.lazygit = {
+        enable = true;
+        settings.git.pagers = [
+          {
+            colorArg = "always";
+            pager = "delta --paging=never";
+          }
+        ];
+      };
+
       services.ssh-agent.enable = true;
 
       home.packages = [ pkgs.gh ];

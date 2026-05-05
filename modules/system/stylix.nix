@@ -17,12 +17,12 @@
             name = "Hasklug Nerd Font";
           };
           sansSerif = {
-            package = pkgs.nerd-fonts.hasklug;
-            name = "Hasklug Nerd Font";
+            package = pkgs.nerd-fonts.ubuntu;
+            name = "Ubuntu Nerd Font";
           };
           serif = {
-            package = pkgs.nerd-fonts.hasklug;
-            name = "Hasklug Nerd Font";
+            package = pkgs.nerd-fonts.ubuntu;
+            name = "Ubuntu Nerd Font";
           };
           emoji = {
             package = pkgs.noto-fonts-color-emoji;

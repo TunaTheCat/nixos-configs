@@ -79,7 +79,11 @@
             pulseaudio = {
               format = "{icon} {volume}%";
               format-muted = "󰝟 {volume}%";
-              format-icons.default = [ "󰕿" "󰖀" "󰕾" ];
+              format-icons.default = [
+                "󰕿"
+                "󰖀"
+                "󰕾"
+              ];
               scroll-step = 2;
               on-click = "pavucontrol";
               on-click-right = "pamixer -t";
@@ -125,7 +129,7 @@
             border-radius: 0px;
             padding: 0;
             margin: 0;
-            font-family: "Hasklug Nerd Font";
+            font-family: "Hack Nerd Font";
             font-size: 14px;
           }
 

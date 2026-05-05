@@ -13,6 +13,10 @@
             fg = "#ff69b4";
             modifiers = [ "bold" ];
           };
+          "comment" = {
+            fg = "base05";
+            modifiers = [ "italic" ];
+          };
         };
 
         settings = {
@@ -105,7 +109,10 @@
               language-servers = [ "typescript-language-server" ];
               formatter = {
                 command = "npx prettier";
-                args = [ "--parser" "typescript" ];
+                args = [
+                  "--parser"
+                  "typescript"
+                ];
               };
               auto-format = true;
             }
@@ -113,25 +120,40 @@
               name = "json";
               formatter = {
                 command = "npx prettier";
-                args = [ "--parser" "json" ];
+                args = [
+                  "--parser"
+                  "json"
+                ];
               };
               auto-format = true;
             }
             {
               name = "html";
-              language-servers = [ "vscode-html-language-server" "emmet-ls" ];
+              language-servers = [
+                "vscode-html-language-server"
+                "emmet-ls"
+              ];
               formatter = {
                 command = "npx prettier";
-                args = [ "--parser" "html" ];
+                args = [
+                  "--parser"
+                  "html"
+                ];
               };
               auto-format = true;
             }
             {
               name = "css";
-              language-servers = [ "vscode-css-language-server" "emmet-ls" ];
+              language-servers = [
+                "vscode-css-language-server"
+                "emmet-ls"
+              ];
               formatter = {
                 command = "npx prettier";
-                args = [ "--parser" "css" ];
+                args = [
+                  "--parser"
+                  "css"
+                ];
               };
               auto-format = true;
             }
@@ -140,13 +162,38 @@
               scope = "source.cpp";
               injection-regex = "cpp";
               file-types = [
-                "cc" "hh" "c++" "cpp" "hpp" "h" "ipp" "tpp" "cxx" "hxx"
-                "ixx" "txx" "ino" "C" "H" "cu" "cuh" "cppm" "h++" "ii" "inl"
+                "cc"
+                "hh"
+                "c++"
+                "cpp"
+                "hpp"
+                "h"
+                "ipp"
+                "tpp"
+                "cxx"
+                "hxx"
+                "ixx"
+                "txx"
+                "ino"
+                "C"
+                "H"
+                "cu"
+                "cuh"
+                "cppm"
+                "h++"
+                "ii"
+                "inl"
               ];
               comment-token = "//";
-              block-comment-tokens = { start = "/*"; end = "*/"; };
+              block-comment-tokens = {
+                start = "/*";
+                end = "*/";
+              };
               language-servers = [ "clangd" ];
-              indent = { tab-width = 2; unit = "  "; };
+              indent = {
+                tab-width = 2;
+                unit = "  ";
+              };
               auto-format = true;
               debugger = {
                 name = "lldb-dap";
@@ -156,14 +203,25 @@
                   {
                     name = "binary";
                     request = "launch";
-                    completion = [{ name = "binary"; completion = "filename"; }];
-                    args = { console = "internalConsole"; program = "{0}"; };
+                    completion = [
+                      {
+                        name = "binary";
+                        completion = "filename";
+                      }
+                    ];
+                    args = {
+                      console = "internalConsole";
+                      program = "{0}";
+                    };
                   }
                   {
                     name = "attach";
                     request = "attach";
                     completion = [ "pid" ];
-                    args = { console = "internalConsole"; pid = "{0}"; };
+                    args = {
+                      console = "internalConsole";
+                      pid = "{0}";
+                    };
                   }
                 ];
               };
