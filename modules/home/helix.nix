@@ -7,8 +7,11 @@
         enable = true;
         defaultEditor = true;
 
-        themes.base16-ashes-custom = {
+        themes.kanagawa-custom = {
           inherits = "stylix";
+          "ui.background" = {
+            bg = "#1F1F28";
+          };
           "ui.virtual.jump-label" = {
             fg = "#ff69b4";
             modifiers = [ "bold" ];
@@ -20,7 +23,7 @@
         };
 
         settings = {
-          theme = lib.mkForce "base16-ashes-custom";
+          theme = lib.mkForce "kanagawa-custom";
           editor = {
             bufferline = "multiple";
             cursorline = true;
