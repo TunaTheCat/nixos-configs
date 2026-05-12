@@ -29,7 +29,6 @@
         nushell
         nil
         gnumake
-        btop
         # nerd-fonts.hasklug
       ];
 
