@@ -12,10 +12,21 @@
         enable = true;
         xdgOpenUsePortal = true;
         config = {
-          common.default = [ "gtk" ];
-          niri.default = [ "gtk" ];
+          common = {
+            default = [ "gtk" ];
+            "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+            "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
+          };
+          niri = {
+            default = [ "gnome" "gtk" ];
+            "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+            "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
+          };
         };
-        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        extraPortals = [
+          pkgs.xdg-desktop-portal-gtk
+          pkgs.xdg-desktop-portal-gnome
+        ];
       };
     };
 }

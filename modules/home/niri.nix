@@ -175,6 +175,7 @@
               "Mod+E" = bind "File Explorer" { spawn = [ "thunar" ]; };
               "Mod+Escape" = bind "Lock Screen" { spawn = [ "hyprlock" ]; };
               "Mod+N" = bind "Toggle Notifications" { spawn = [ "makoctl" "toggle" ]; };
+              "Mod+P" = bind "Power Menu" { spawn = [ "powermenu" ]; };
 
               "Mod+Q" = bind "Close Window" { close-window = {}; };
               "Mod+F" = bind "Maximize Column" { maximize-column = {}; };
@@ -223,10 +224,10 @@
               "Mod+Shift+8" = bind "Move to WS 8" { move-column-to-workspace = 8; };
               "Mod+Shift+9" = bind "Move to WS 9" { move-column-to-workspace = 9; };
 
-              "Mod+Minus" = bind "Shrink Width" { set-column-width = "-10%"; };
-              "Mod+Equal" = bind "Grow Width" { set-column-width = "+10%"; };
-              "Mod+Shift+Minus" = bind "Shrink Height" { set-window-height = "-10%"; };
-              "Mod+Shift+Equal" = bind "Grow Height" { set-window-height = "+10%"; };
+              "Mod+Minus" = bind "Shrink Width" { set-column-width = "-1%"; };
+              "Mod+Equal" = bind "Grow Width" { set-column-width = "+1%"; };
+              "Mod+Shift+Minus" = bind "Shrink Height" { set-window-height = "-1%"; };
+              "Mod+Shift+Equal" = bind "Grow Height" { set-window-height = "+1%"; };
 
               "Mod+C" = bind "Consume into Column" { consume-window-into-column = {}; };
               "Mod+X" = bind "Expel from Column" { expel-window-from-column = {}; };

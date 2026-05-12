@@ -7,7 +7,20 @@
         enable = true;
         profiles.default.isDefault = true;
       };
-
+      programs.ranger = {
+        enable = true;
+        settings = {
+          show_hidden = true;
+          preview_images = true;
+        };
+      };
+      programs.yazi = {
+        enable = true;
+        settings = {
+          show_hidden = true;
+          preview_images = true;
+        };
+      };
       stylix.targets.firefox.profileNames = [ "default" ];
 
       home.packages = with pkgs; [
