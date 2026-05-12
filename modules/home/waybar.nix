@@ -27,7 +27,6 @@
               "bluetooth"
               "niri/language"
               "tray"
-              "custom/power"
             ];
 
             "custom/launcher" = {
@@ -113,13 +112,6 @@
               icon-size = 20;
               spacing = 8;
             };
-
-            "custom/power" = {
-              format = "⏻";
-              tooltip = true;
-              tooltip-format = "Power menu";
-              on-click = "powermenu";
-            };
           };
         };
 
@@ -177,7 +169,7 @@
             color: @base05;
           }
 
-          #cpu, #memory, #pulseaudio, #network, #bluetooth, #language, #tray, #custom-power {
+          #cpu, #memory, #pulseaudio, #network, #bluetooth, #language, #tray {
             padding-left: 5px;
             padding-right: 5px;
             margin-right: 10px;
@@ -199,12 +191,6 @@
           #network { color: @base0E; }
           #bluetooth { color: @base0D; }
           #language { color: @base0A; }
-
-          #custom-power {
-            color: @base08;
-            padding-right: 15px;
-            margin-right: 5px;
-          }
         '';
       };
     };
