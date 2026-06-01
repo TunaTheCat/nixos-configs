@@ -112,7 +112,14 @@
                 "${../../wallpapers/nix_dark_4k.png}"
               ];
             }
-            { command = [ "waybar" ]; }
+            {
+              command = [
+                "systemctl"
+                "--user"
+                "start"
+                "waybar.service"
+              ];
+            }
             {
               command = [
                 "swayidle"
