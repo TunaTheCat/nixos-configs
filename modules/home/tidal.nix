@@ -24,6 +24,10 @@
 
       programs.neovim = {
         enable = true;
+        # No ruby/python neovim providers needed (lua tidal plugin only); adopt
+        # the lean 26.05 defaults instead of the legacy `true`.
+        withRuby = false;
+        withPython3 = false;
         plugins = [
           {
             plugin = vim-tidal;

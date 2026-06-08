@@ -1,10 +1,15 @@
 { ... }:
 {
   flake.modules.homeManager.apps =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     {
+      # Keep gtk4 apps themed by stylix (legacy default before stateVersion 26.05).
+      gtk.gtk4.theme = config.gtk.theme;
+
       programs.firefox = {
         enable = true;
+        # Keep the pre-26.05 profile location so the existing profile is reused.
+        configPath = ".mozilla/firefox";
         profiles.default.isDefault = true;
       };
       programs.ranger = {
@@ -16,9 +21,9 @@
       };
       programs.yazi = {
         enable = true;
+        shellWrapperName = "yy";
         settings = {
-          show_hidden = true;
-          preview_images = true;
+          mgr.show_hidden = true;
         };
       };
       stylix.targets.firefox.profileNames = [ "default" ];

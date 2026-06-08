@@ -13,7 +13,7 @@
 
       programs.thunar = {
         enable = true;
-        plugins = with pkgs.xfce; [
+        plugins = with pkgs; [
           thunar-archive-plugin
           thunar-volman
         ];
@@ -23,7 +23,7 @@
       # launch category helpers (e.g. the preferred TerminalEmulator). Without
       # it, opening a terminal or a Terminal=true app from Thunar fails with
       # "Could not find fallback TerminalEmulator application".
-      environment.systemPackages = [ pkgs.xfce.xfce4-settings ];
+      environment.systemPackages = [ pkgs.xfce4-settings ];
 
       services.gvfs.enable = true;
       services.tumbler.enable = true;
