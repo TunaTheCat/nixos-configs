@@ -37,7 +37,7 @@ in
     networking.hostName = "nix-home";
     nixpkgs.hostPlatform = "x86_64-linux";
     powerManagement.cpuFreqGovernor = "performance";
-    boot.kernelParams = [ "amdgpu.gfxoff=0" ];
+    boot.kernelParams = [ "amdgpu.ppfeaturemask=0xffffdfff" ];
 
     # Disable built-in MT7921 Bluetooth (Foxconn 0489:e0e2) so only the
     # ASUS BT500 USB adapter (on desk, better signal) is used.

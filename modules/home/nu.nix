@@ -55,7 +55,7 @@
 
           # carapace
           source-env $"($nu.cache-dir)/carapace.nu"
-
+          alias tidal = ghci -ghci-script (^find /nix/store -name "BootTidal.hs" | lines | first)
           fastfetch
         '';
       };
