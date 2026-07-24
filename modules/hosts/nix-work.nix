@@ -18,7 +18,6 @@ in
       nixos.tailscale
       nixos.stylix
       nixos.greetd
-      nixos.watchdog
       nixos.nh
       nixos.user
     ];

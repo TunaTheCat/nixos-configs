@@ -4,6 +4,7 @@
     { pkgs, ... }:
     {
       imports = [ inputs.stylix.nixosModules.stylix ];
+      disabledModules = [ "${inputs.stylix}/modules/kmscon/nixos.nix" ];
 
       stylix = {
         enable = true;
@@ -48,6 +49,7 @@
           dark = "Papirus-Dark";
           light = "Papirus-Light";
         };
+
       };
     };
 }

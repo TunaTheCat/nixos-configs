@@ -93,6 +93,9 @@
               less.validate.enable = true;
               provideFormatter = true;
             };
+            haskell-language-server.config = {
+              haskell.formattingProvider = "fourmolu";
+            };
           };
 
           language = [
@@ -158,6 +161,11 @@
                   "css"
                 ];
               };
+              auto-format = true;
+            }
+            {
+              name = "haskell";
+              language-servers = [ "haskell-language-server" ];
               auto-format = true;
             }
             {

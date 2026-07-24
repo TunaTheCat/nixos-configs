@@ -3,9 +3,6 @@
   flake.modules.homeManager.apps =
     { pkgs, config, ... }:
     {
-      # Keep gtk4 apps themed by stylix (legacy default before stateVersion 26.05).
-      gtk.gtk4.theme = config.gtk.theme;
-
       programs.firefox = {
         enable = true;
         # Keep the pre-26.05 profile location so the existing profile is reused.
@@ -40,6 +37,8 @@
         remmina
         libreoffice-fresh
         gimp
+        foliate
+        proton-vpn-cli
       ];
 
       # Thunar uses the XFCE "helper" mechanism to find a terminal emulator
