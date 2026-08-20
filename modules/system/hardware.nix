@@ -1,19 +1,24 @@
 { ... }:
 {
-  flake.modules.nixos.hardware = {
-    hardware.graphics.enable = true;
-    hardware.enableRedistributableFirmware = true;
+  flake.modules.nixos.hardware =
+    { pkgs, ... }:
+    {
+      hardware.graphics.enable = true;
+      hardware.enableRedistributableFirmware = true;
 
-    hardware.bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-        General = {
-          Experimental = true;
+      # `sensors` CLI + hwmon labels; also backs btop/waybar temperature readouts.
+      environment.systemPackages = [ pkgs.lm_sensors ];
+
+      hardware.bluetooth = {
+        enable = true;
+        powerOnBoot = true;
+        settings = {
+          General = {
+            Experimental = true;
+          };
         };
       };
-    };
 
-    services.blueman.enable = true;
-  };
+      services.blueman.enable = true;
+    };
 }

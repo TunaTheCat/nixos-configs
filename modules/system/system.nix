@@ -29,6 +29,10 @@
         nushell
         nil
         gnumake
+        fd
+        unzip
+        fdtools
+        nmap
         # nerd-fonts.hasklug
       ];
 

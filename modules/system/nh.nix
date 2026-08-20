@@ -7,13 +7,12 @@
         enable = true;
         clean = {
           enable = true;
-          extraArgs = "--keep-since 7d --keep 5";
+          extraArgs = "--keep-since 30d --keep 5";
         };
         flake = "/home/${config.username}/.dotfiles";
       };
 
       environment.systemPackages = with pkgs; [
-        nix-output-monitor
         nvd
       ];
     };

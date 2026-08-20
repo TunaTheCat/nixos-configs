@@ -11,6 +11,7 @@
         draw_minimal_borders = "yes";
         hide_window_decorations = "yes";
         scrollback_pager = ''sh -c "hx /tmp/kitty_scrollback_buffer"'';
+        background_opacity = "0.8";
       };
       keybindings = {
         "ctrl+shift+h" = "show_scrollback";

@@ -26,11 +26,5 @@ in
     nixpkgs.hostPlatform = "x86_64-linux";
     powerManagement.cpuFreqGovernor = "powersave";
 
-    home-manager.users.${config.username} = {
-      programs.niri.settings.outputs = {
-        "eDP-1".scale = 1.0;
-        "DP-7".scale = 1.0;
-      };
-    };
   };
 }

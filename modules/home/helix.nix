@@ -32,6 +32,8 @@
             end-of-line-diagnostics = "hint";
             trim-trailing-whitespace = true;
 
+            soft-wrap.enable = true;
+
             inline-diagnostics.cursor-line = "warning";
 
             statusline.left = [

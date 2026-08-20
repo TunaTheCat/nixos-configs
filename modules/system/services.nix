@@ -20,6 +20,9 @@
       power-profiles-daemon.enable = true;
       dbus.enable = true;
       fstrim.enable = true;
+      # Intel thermal management daemon — proactively manages thermals to
+      # avoid hard thermal throttling on the thermally-constrained i7-1260P.
+      thermald.enable = true;
     };
 
     services.logind.settings = {

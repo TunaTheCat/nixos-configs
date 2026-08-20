@@ -21,6 +21,7 @@
             modules-center = [ "clock" ];
             modules-right = [
               "cpu"
+              "temperature"
               "memory"
               "pulseaudio"
               "network"
@@ -67,6 +68,23 @@
               format = " {usage}%";
               format-alt = " {avg_frequency} GHz";
               interval = 2;
+            };
+
+            temperature = {
+              # Stable path (survives hwmonN renumbering): coretemp "Package id 0".
+              hwmon-path-abs = "/sys/devices/platform/coretemp.0/hwmon";
+              input-filename = "temp1_input";
+              critical-threshold = 90;
+              interval = 2;
+              format = "{icon} {temperatureC}°C";
+              format-icons = [
+                ""
+                ""
+                ""
+                ""
+                ""
+              ];
+              tooltip = true;
             };
 
             memory = {
@@ -169,7 +187,7 @@
             color: @base05;
           }
 
-          #cpu, #memory, #pulseaudio, #network, #bluetooth, #language, #tray {
+          #cpu, #temperature, #memory, #pulseaudio, #network, #bluetooth, #language, #tray {
             padding-left: 5px;
             padding-right: 5px;
             margin-right: 10px;
@@ -186,6 +204,8 @@
           }
 
           #cpu { color: @base0B; }
+          #temperature { color: @base0A; }
+          #temperature.critical { color: @base08; }
           #memory { color: @base0C; }
           #pulseaudio { color: @base0D; }
           #network { color: @base0E; }
