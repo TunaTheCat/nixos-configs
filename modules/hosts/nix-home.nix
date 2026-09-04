@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   inherit (config.flake.modules) nixos;
 in
@@ -22,17 +22,6 @@ in
       nixos.user
     ];
 
-    # TPM2 auto-unlock for LUKS root
-    boot.initrd.systemd.enable = true;
-    boot.initrd.luks.devices."luks-21e78e14-ab2b-4857-aa46-553eeec6f345".crypttabExtraOpts = [
-      "tpm2-device=auto"
-    ];
-    security.tpm2 = {
-      enable = true;
-      pkcs11.enable = true;
-      tctiEnvironment.enable = true;
-    };
-
     networking.hostName = "nix-home";
     nixpkgs.hostPlatform = "x86_64-linux";
     powerManagement.cpuFreqGovernor = "performance";
@@ -44,15 +33,22 @@ in
       SUBSYSTEM=="usb", ATTR{idVendor}=="0489", ATTR{idProduct}=="e0e2", ATTR{authorized}="0"
     '';
 
-    # Dell AW3225QF via DisplayPort
-    home-manager.users.${config.username}.programs.niri.settings.outputs."DP-2" = {
-      scale = 1.0;
-      mode = {
-        width = 3840;
-        height = 2160;
-        refresh = 239.991;
+    home-manager.users.${config.username} = {
+      # Dell AW3225QF via DisplayPort
+      programs.niri.settings.outputs."DP-2" = {
+        scale = 1.0;
+        mode = {
+          width = 3840;
+          height = 2160;
+          refresh = 239.991;
+        };
+        variable-refresh-rate = false;
       };
-      variable-refresh-rate = false;
+
+      # AMD Ryzen (k10temp), unlike nix-work's Intel coretemp default in waybar.nix.
+      # PCI address of the SMU function is stable across boots/hwmonN renumbering.
+      programs.waybar.settings.mainBar.temperature.hwmon-path-abs =
+        lib.mkForce "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
     };
   };
 }
