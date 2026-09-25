@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake.modules.homeManager.niri =
-    { pkgs, config, ... }:
+    { pkgs, lib, config, ... }:
     let
       terminal = "kitty";
       browser = "firefox";
@@ -109,7 +109,7 @@
                 "-m"
                 "fill"
                 "-i"
-                "${../../wallpapers/nix_dark_4k.png}"
+                "${config.stylix.image}"
               ];
             }
             {
@@ -160,6 +160,13 @@
               active.color = "#9d7cd8";
               inactive.color = "#3b3b4f";
             };
+          };
+
+          # niri has no built-in Xwayland; X11-only apps (e.g. anydesk) abort
+          # with "Cannot open display" without this.
+          xwayland-satellite = {
+            enable = true;
+            path = lib.getExe pkgs.xwayland-satellite;
           };
 
           debug.honor-xdg-activation-with-invalid-serial = {};

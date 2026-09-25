@@ -39,6 +39,8 @@
         gimp
         foliate
         proton-vpn-cli
+        anydesk
+        frogmouth
       ];
 
       # Thunar uses the XFCE "helper" mechanism to find a terminal emulator

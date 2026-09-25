@@ -8,11 +8,11 @@
 
       stylix = {
         enable = true;
-        image = ../../wallpapers/nix_dark_4k.png;
+        image = ../../wallpapers/nixos_light_4k.png;
 
         polarity = "dark";
-        # base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa.yaml";
-        base16Scheme = "${pkgs.base16-schemes}/share/themes/espresso.yaml";
+        base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa.yaml";
+        # base16Scheme = "${pkgs.base16-schemes}/share/themes/espresso.yaml";
         fonts = {
           monospace = {
             package = pkgs.nerd-fonts.hasklug;

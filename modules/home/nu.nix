@@ -18,6 +18,10 @@
         enable = true;
 
         envFile.text = ''
+          # tools installed outside nix (e.g. the antigravity `agy` cli)
+          use std/util "path add"
+          path add $"($env.HOME)/.local/bin"
+
           $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
           mkdir $"($nu.cache-dir)"
           carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
