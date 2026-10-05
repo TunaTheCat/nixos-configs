@@ -24,6 +24,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     claude-code-nix.url = "github:sadjow/claude-code-nix";
+    llm-agents.url = "github:numtide/llm-agents.nix";
+    # `cachix` branch = latest commit already in noctalia.cachix.org; no
+    # nixpkgs follows, since overriding inputs changes hashes and misses the cache.
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      # Both track nixos-unstable; share one copy.
+      inputs.nixpkgs.follows = "noctalia/nixpkgs";
+    };
   };
 
   outputs =

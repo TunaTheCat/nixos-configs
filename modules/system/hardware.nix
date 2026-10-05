@@ -6,7 +6,7 @@
       hardware.graphics.enable = true;
       hardware.enableRedistributableFirmware = true;
 
-      # `sensors` CLI + hwmon labels; also backs btop/waybar temperature readouts.
+      # `sensors` CLI + hwmon labels; also backs btop/noctalia temperature readouts.
       environment.systemPackages = [ pkgs.lm_sensors ];
 
       hardware.bluetooth = {

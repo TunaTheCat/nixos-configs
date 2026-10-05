@@ -98,6 +98,20 @@
             haskell-language-server.config = {
               haskell.formattingProvider = "fourmolu";
             };
+            # Build with latexmk on save, then jump zathura to the cursor line.
+            texlab.config.texlab = {
+              build.onSave = true;
+              build.forwardSearchAfter = true;
+              forwardSearch = {
+                executable = "zathura";
+                args = [
+                  "--synctex-forward"
+                  "%l:1:%f"
+                  "%p"
+                ];
+              };
+              chktex.onEdit = true;
+            };
           };
 
           language = [
@@ -162,6 +176,15 @@
                   "--parser"
                   "css"
                 ];
+              };
+              auto-format = true;
+            }
+            {
+              name = "latex";
+              language-servers = [ "texlab" ];
+              formatter = {
+                command = "tex-fmt";
+                args = [ "--stdin" ];
               };
               auto-format = true;
             }

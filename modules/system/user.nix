@@ -26,6 +26,7 @@
           "networkmanager"
           "wheel"
           "audio"
+          "kvm"
         ];
         shell = pkgs.nushell;
         hashedPassword = "$y$j9T$SiImGjYtyoL4krrAWCWQ21$FobbxKFBsxRpudY8L9Z0K5wbRAipY6TljD2wEWoDqJA";

@@ -25,11 +25,13 @@
       };
       stylix.targets.firefox.profileNames = [ "default" ];
 
+      # Default PDF viewer; also the LaTeX preview (texlab forward search).
+      programs.zathura.enable = true;
+
       home.packages = with pkgs; [
         slack
         teams-for-linux
         loupe
-        evince
         openvpn
         keepassxc
         joplin-desktop
@@ -65,7 +67,7 @@
 
       # Keep Loupe the default image viewer; installing GIMP otherwise lets it
       # grab the default handler for image types. GIMP stays available via
-      # "Open With".
+      # "Open With". PDFs open in zathura.
       xdg.mimeApps = {
         enable = true;
         defaultApplications =
@@ -81,6 +83,7 @@
             "image/tiff" = loupe;
             "image/svg+xml" = loupe;
             "image/avif" = loupe;
+            "application/pdf" = "org.pwmt.zathura-pdf-mupdf.desktop";
           };
       };
     };

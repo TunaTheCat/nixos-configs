@@ -26,32 +26,12 @@
             ;;
         esac
       '';
-
-      powermenu = pkgs.writeShellScriptBin "powermenu" ''
-        choice=$(printf "%s\n" \
-          $'  Lock' \
-          $'  Logout' \
-          $'\U000f0904  Suspend' \
-          $'  Reboot' \
-          $'  Shutdown' \
-          | ${pkgs.fuzzel}/bin/fuzzel --dmenu --hide-prompt --width 18 --lines 5)
-
-        case "$choice" in
-          *Lock)     ${pkgs.hyprlock}/bin/hyprlock ;;
-          *Logout)   niri msg action quit ;;
-          *Suspend)  systemctl suspend ;;
-          *Reboot)   systemctl reboot ;;
-          *Shutdown) systemctl poweroff ;;
-        esac
-      '';
     in
     {
       imports = [ inputs.niri.homeModules.niri ];
 
       home.packages = with pkgs; [
         hyprpolkitagent
-        swayidle
-        swaybg
         wl-clipboard
         wl-clip-persist
         playerctl
@@ -61,8 +41,14 @@
         networkmanagerapplet
         poweralertd
         screenshot
-        powermenu
       ];
+
+      xdg.configFile."swappy/config".text = ''
+        [Default]
+        save_dir=${config.home.homeDirectory}/Pictures/Screenshots
+        save_filename_format=%Y-%m-%d_%H-%M-%S.png
+        early_exit=true
+      '';
 
       programs.niri = {
         enable = true;
@@ -105,35 +91,10 @@
             }
             {
               command = [
-                "swaybg"
-                "-m"
-                "fill"
-                "-i"
-                "${config.stylix.image}"
-              ];
-            }
-            {
-              command = [
                 "systemctl"
                 "--user"
                 "start"
-                "waybar.service"
-              ];
-            }
-            {
-              command = [
-                "swayidle"
-                "-w"
-                "timeout"
-                "600"
-                "hyprlock"
-                "timeout"
-                "900"
-                "niri msg action power-off-monitors"
-                "resume"
-                "niri msg action power-on-monitors"
-                "before-sleep"
-                "hyprlock"
+                "noctalia.service"
               ];
             }
           ];
@@ -185,11 +146,13 @@
             {
               "Mod+Return" = bind "Terminal" { spawn = [ terminal ]; };
               "Mod+B" = bind "Browser" { spawn = [ browser ]; };
-              "Mod+D" = bind "App Launcher" { spawn = [ "fuzzel" ]; };
+              "Mod+D" = bind "App Launcher" { spawn = [ "noctalia" "msg" "panel-toggle" "launcher" ]; };
               "Mod+E" = bind "File Explorer" { spawn = [ "thunar" ]; };
-              "Mod+Escape" = bind "Lock Screen" { spawn = [ "hyprlock" ]; };
-              "Mod+N" = bind "Toggle Notifications" { spawn = [ "makoctl" "toggle" ]; };
-              "Mod+P" = bind "Power Menu" { spawn = [ "powermenu" ]; };
+              "Mod+Escape" = bind "Lock Screen" { spawn = [ "noctalia" "msg" "session" "lock" ]; };
+              "Mod+N" = bind "Control Center" { spawn = [ "noctalia" "msg" "panel-toggle" "control-center" ]; };
+              "Mod+Shift+N" = bind "Do Not Disturb" { spawn = [ "noctalia" "msg" "notification-dnd-toggle" ]; };
+              "Mod+Comma" = bind "Shell Settings" { spawn = [ "noctalia" "msg" "settings-toggle" ]; };
+              "Mod+P" = bind "Power Menu" { spawn = [ "noctalia" "msg" "panel-toggle" "session" ]; };
 
               "Mod+Q" = bind "Close Window" { close-window = {}; };
               "Mod+F" = bind "Maximize Column" { maximize-column = {}; };
@@ -200,6 +163,8 @@
               "Mod+Shift+S" = bind "Screenshot (Copy)" { spawn = [ "screenshot" "--copy" ]; };
               "Mod+Print" = bind "Screenshot (Save)" { spawn = [ "screenshot" "--save" ]; };
               "Mod+Shift+Print" = bind "Screenshot (Edit)" { spawn = [ "screenshot" "--swappy" ]; };
+              "Mod+Ctrl+S" = bind "Screenshot (Save)" { spawn = [ "screenshot" "--save" ]; };
+              "Mod+Alt+S" = bind "Screenshot (Edit)" { spawn = [ "screenshot" "--swappy" ]; };
 
               "Mod+Left" = hidden { focus-column-left = {}; };
               "Mod+Right" = hidden { focus-column-right = {}; };
@@ -263,6 +228,12 @@
             };
 
           window-rules = [
+            {
+              matches = [ { app-id = "dev.noctalia.Noctalia"; } ];
+              open-floating = true;
+              default-column-width.fixed = 1080;
+              default-window-height.fixed = 920;
+            }
             {
               matches = [
                 { app-id = "mpv"; }

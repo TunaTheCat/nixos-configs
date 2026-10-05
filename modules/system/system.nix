@@ -9,9 +9,13 @@
           "nix-command"
           "flakes"
         ];
-        substituters = [ "https://nix-community.cachix.org" ];
+        substituters = [
+          "https://nix-community.cachix.org"
+          "https://noctalia.cachix.org"
+        ];
         trusted-public-keys = [
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
         ];
       };
 
@@ -35,6 +39,17 @@
         nmap
         # nerd-fonts.hasklug
       ];
+
+      # oomd is on by default but monitors no cgroups unless these are set, so a
+      # runaway session would thrash swap until the machine froze (2026-10-02).
+      systemd.oomd = {
+        # Both kill the worst offending cgroup at >80% memory pressure for 30s.
+        enableRootSlice = true;
+        enableUserSlices = true;
+      };
+
+      # Compressed RAM swap ahead of the slow on-disk partition.
+      zramSwap.enable = true;
 
       virtualisation.podman = {
         enable = true;

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, ... }:
 let
   inherit (config.flake.modules) nixos;
 in
@@ -44,11 +44,6 @@ in
         };
         variable-refresh-rate = false;
       };
-
-      # AMD Ryzen (k10temp), unlike nix-work's Intel coretemp default in waybar.nix.
-      # PCI address of the SMU function is stable across boots/hwmonN renumbering.
-      programs.waybar.settings.mainBar.temperature.hwmon-path-abs =
-        lib.mkForce "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
     };
   };
 }
