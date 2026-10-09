@@ -57,6 +57,21 @@
             }
           })
 
+          # Over SSH nothing unlocks gnome-keyring (PAM only does it for greetd),
+          # so Secret Service clients like sbx hang on an unlock prompt drawn on
+          # the laptop's screen. Unlock (or create) the login keyring here.
+          def keyring-unlock [] {
+            let pw = (input -s "keyring password: ")
+            print ""
+            $pw | ^gnome-keyring-daemon --unlock | complete | ignore
+          }
+          if ($env.SSH_CONNECTION? != null) {
+            let locked = (do { ^timeout 3 busctl --user get-property org.freedesktop.secrets /org/freedesktop/secrets/collection/login org.freedesktop.Secret.Collection Locked } | complete)
+            if $locked.exit_code != 0 or ($locked.stdout | str trim) == "b true" {
+              keyring-unlock
+            }
+          }
+
           # carapace
           source-env $"($nu.cache-dir)/carapace.nu"
           alias tidal = ghci -ghci-script (^find /nix/store -name "BootTidal.hs" | lines | first)
