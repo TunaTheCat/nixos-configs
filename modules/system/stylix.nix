@@ -8,7 +8,7 @@
 
       stylix = {
         enable = true;
-        image = ../../wallpapers/nixos_light_4k.png;
+        image = ../../wallpapers/window_kanagawa_4k.png;
 
         polarity = "dark";
         base16Scheme = "${pkgs.base16-schemes}/share/themes/kanagawa.yaml";
