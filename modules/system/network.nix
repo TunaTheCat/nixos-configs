@@ -18,8 +18,9 @@
         };
         # Split-horizon override: internal IP for a name that resolves publicly.
         extraHosts = ''
-          10.10.10.25 server-25.spacetek.local docker.spacetek.ch
-          10.10.10.112 server-27.spacetek.local
+          10.10.10.25 server-25.spacetek.local docker.spacetek.ch server-25
+          10.10.10.112 server-27.spacetek.local server-27
+          10.10.10.18 gitlab.spacetek.ch
         '';
         # No networking.nameservers: each link supplies its own DNS, so the
         # ethernet DHCP servers handle spacetek.local. Public lookups fall
