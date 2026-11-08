@@ -1,0 +1,15 @@
+--- a/daemon/dbus/gkd-secret-service.c
++++ b/daemon/dbus/gkd-secret-service.c
+@@ -433,6 +433,12 @@
+ 					&error);
+ 	g_variant_unref (input_payload);
+ 
++	/* Negotiation can fail without setting error (e.g. caller not yet
++	 * registered); completing with a NULL output aborts the daemon. */
++	if (error == NULL && output == NULL)
++		error = g_error_new_literal (G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
++					     "Couldn't open session");
++
+ 	if (error != NULL) {
+ 		g_dbus_method_invocation_take_error (invocation, error);
+ 	} else {
