@@ -55,6 +55,9 @@
         };
       };
 
+      # openvpn3 is D-Bus services; a home.packages install can't register them.
+      programs.openvpn3.enable = true;
+
       environment.systemPackages = with pkgs; [
         networkmanagerapplet
         cifs-utils
